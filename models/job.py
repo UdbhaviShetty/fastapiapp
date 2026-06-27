@@ -5,11 +5,6 @@ from sqlalchemy.orm import base,engine,SessionLocal
 
 class Job(Base):
     __tablename__="jobs"
-
-Base = declarative_base()
-
-class Job(Base):
-    __tablename__="jobs"
     id = Column(Integer,primary_key=True,index=True)
     title = Column(String,nullable=False)
     description = Column(String)
@@ -17,4 +12,3 @@ class Job(Base):
     company_id = Column(Integer,ForeignKey ("companies.id"))
 
     company = relationship("Company",back_populates="jobs")
-    
