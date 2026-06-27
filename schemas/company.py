@@ -8,16 +8,16 @@ class CompanyBase(BaseModel):
     phone: str
 
 class CompanyCreate(CompanyBase):
-    pass
+   pass
 
 class CompanyUpdate(CompanyBase):
     name: Optional[str] = None
-    location: Optional[str] = None
-    phone: Optional[str] = None
+    email: Optional[str]= None
+    phone: Optional[str]= None
 
 class CompanyResponse(CompanyBase):
-    id:int
+    id:int 
     jobs: list[JobResponse]
 
-    class Config:
-        from_attributes = True
+    class config:
+        from_attributes = True 
