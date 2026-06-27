@@ -16,3 +16,13 @@ def get_all_job():
 @router.get("/{job_id}")
 def get_job(job_id: int):
     return jobs[job_id]
+
+@router.get("/{job_id}")
+def get_job(job_id: int):
+    return jobs[job_id]
+
+@router.put("/{job_id}")
+def delete_job(job_id:int):
+    jobs.pop(job_id)
+    return jobs
+
