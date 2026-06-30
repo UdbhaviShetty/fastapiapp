@@ -4,8 +4,8 @@ import CompanyCard from "./components/CompanyCard";
 import JobCard from "./components/JobCard";
 import Footer from "./components/Footer";
 import {useEffect, useState} from "react";
-import { getCompanies } from "./Services/CompanyService";
-import type { Company } from "./types/Company";
+import { getCompanies } from  "./Services/CompanyServices";
+import type { Company } from  "./types/company";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -38,15 +38,16 @@ function App() {
   }
 
   return (
-    <div>
-      <NavBar />
-      <Welcome />
-      <CompanyCard />
-      <JobCard />
-      <Footer />
-    </div>
-  );
+    <>
+    <NavBar />
+    <Welcome />
+    <br />
+    <CompanyCard 
+    companies={companies} />
+    <JobCard />
+    <Footer />
+    </>
+  )
 }
 
 export default App
-
