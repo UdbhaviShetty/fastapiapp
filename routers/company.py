@@ -25,7 +25,7 @@ def get_all_company(db: Session = Depends(get_db)):
 
 @router.get("/{company_id}", status_code=status.HTTP_200_OK, response_model=CompanyResponse)
 def get_company(company_id: int, db: Session = Depends(get_db)):
-    company = db,query(Company).filter(Company.id == company_id).first()
+    company = db.query(Company).filter(Company.id == company_id).first()
     if not company:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Company Not found")
     return company
