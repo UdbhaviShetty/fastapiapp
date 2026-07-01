@@ -18,7 +18,7 @@ function App(){
       const companies = await getCompanies();
       setCompanies(companies);
     } catch (error) {
-      setError(error);
+      setError(error as Error);
     } finally {
       setLoading(false);
     }
@@ -29,7 +29,7 @@ function App(){
       const updatedCompany = await updateCompany(company.id,company);
       setCompanies(companies.map((company) => company.id === updatedCompany.id ? updatedCompany : company));
     }catch(error){
-      setError(error);
+      setError(error as Error);
     }
   }
 
@@ -38,7 +38,7 @@ function App(){
       await deleteCompany(id);
       setCompanies(companies.filter((company) => company.id !== id));
     }catch(error){
-      setError(error);
+      setError(error as Error);
     }
   }
 
@@ -47,7 +47,7 @@ function App(){
       const newCompany = await createCompany(company);
       setCompanies([...companies,newCompany]);
     }catch(error){
-      setError(error);
+      setError(error as Error);
     }
   }
 
