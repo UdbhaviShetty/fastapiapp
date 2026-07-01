@@ -1,4 +1,4 @@
-interface job{
+interface Job{
     id:number;
     title:string;
     description:string;
@@ -6,4 +6,4 @@ interface job{
     salary:number;
     companyId:number;
 }
-export type {job}
+export type {Job};

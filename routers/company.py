@@ -11,8 +11,8 @@ router = APIRouter(prefix="/company", tags=["company"])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=CompanyResponse)
-def create_company(company: CompanyCreate, db: Session = Depends(get_db)):
-    db_company = company.Company(**company.dict())
+def create_company(company_data: CompanyCreate, db: Session = Depends(get_db)):
+    db_company = Company(**company_data.model_dump())
     db.add(db_company)
     db.commit()
     db.refresh(db_company)
