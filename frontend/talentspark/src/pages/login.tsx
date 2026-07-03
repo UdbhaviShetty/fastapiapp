@@ -14,7 +14,7 @@ function Login({onLogin, onSwitchToRegister}: Props){
         e.preventDefault();
         try {
             const response = await login({email,password});
-            onLogin(response.access_token);
+            onLogin(response.token);
         } catch (error) {
             console.error("Error during login:", error);
             alert("Login failed");
