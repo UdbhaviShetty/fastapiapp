@@ -2,8 +2,7 @@ interface Job{
     id:number;
     title:string;
     description:string;
-    location:string;
-    salary:number;
-    companyId:number;
+    salary:string;
+    company_id:number;
 }
-export type {Job};
+export type {Job}
