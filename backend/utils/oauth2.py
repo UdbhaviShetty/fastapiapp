@@ -22,5 +22,3 @@ def role_required(roles: list):
         return current_user
 
     return role_decorator
-
-
