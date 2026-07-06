@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
 from schemas.chat import ChatRequest, ChatResponse
-from services.langchain_service import get_ai_response
+from services.langchain_services import get_ai_response
 
 
 router = APIRouter(

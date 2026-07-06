@@ -1,10 +1,10 @@
 from pydantic import BaseModel
 
 class Token(BaseModel):
-    token: str
-    token_type: str
+    access_token: str
+    token_type: str = "bearer"
 
 class LoginResponse(BaseModel):
-    token: str
-    token_type: str
+    access_token: str
+    token_type: str = "bearer"
     user: dict
