@@ -53,72 +53,129 @@ function JobMatch() {
     };
 
     return (
-        <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto", textAlign: "left" }}>
-            <h2>Smart Job Match</h2>
+        <div className="match-container">
+            <h2 className="title">Smart Job Match</h2>
 
-            <div style={{ marginBottom: "20px", padding: "15px", border: "1px solid #ccc", borderRadius: "5px" }}>
-                <h3>Step 1: Embed Jobs into Vector DB</h3>
-                <p style={{ fontSize: "14px", marginBottom: "10px" }}>Click below to embed all jobs from the database into Qdrant for semantic search.</p>
-                <button onClick={handleEmbed} disabled={loading} style={{ padding: "8px 20px" }}>
-                    {loading ? "Embedding..." : "Embed All Jobs"}
+            {/* Step 1 */}
+            <div className="match-section">
+                <h3 className="match-section-title">
+                    <span className="match-badge">Step 1</span> Embed Jobs into Vector DB
+                </h3>
+                <p style={{ fontSize: "0.95rem", color: "var(--text)", marginBottom: "1.25rem" }}>
+                    Click below to vector-embed all jobs from the database into Qdrant. This enables AI-powered semantic matching.
+                </p>
+                <button onClick={handleEmbed} disabled={loading} className="add-btn" style={{ marginTop: 0 }}>
+                    {loading ? "Embedding Jobs..." : "Embed All Jobs"}
                 </button>
-                {embedMsg && <p style={{ marginTop: "10px", color: "green" }}>{embedMsg}</p>}
+                {embedMsg && (
+                    <p style={{ marginTop: "1rem", color: "#10b981", fontWeight: 600, fontSize: "0.95rem" }}>
+                        ⚡ {embedMsg}
+                    </p>
+                )}
             </div>
 
-            <div style={{ marginBottom: "20px", padding: "15px", border: "1px solid #ccc", borderRadius: "5px" }}>
-                <h3>Step 2: Semantic Job Search</h3>
-                <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search jobs... e.g. 'python backend developer'"
-                    style={{ width: "70%", padding: "8px", marginRight: "10px" }}
-                />
-                <button onClick={handleSearch} disabled={loading || !searchQuery.trim()} style={{ padding: "8px 20px" }}>
-                    Search
-                </button>
+            {/* Step 2 */}
+            <div className="match-section">
+                <h3 className="match-section-title">
+                    <span className="match-badge">Step 2</span> Semantic Job Search
+                </h3>
+                <p style={{ fontSize: "0.95rem", color: "var(--text)", marginBottom: "1rem" }}>
+                    Search for jobs using natural language sentences or conceptual keywords.
+                </p>
+                <div style={{ display: "flex", gap: "0.75rem", marginBottom: "1rem", flexWrap: "wrap" }}>
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search jobs... e.g. 'python backend developer with AWS'"
+                        className="input"
+                        style={{ flex: 1, minWidth: "250px" }}
+                    />
+                    <button 
+                        onClick={handleSearch} 
+                        disabled={loading || !searchQuery.trim()} 
+                        className="add-btn"
+                        style={{ marginTop: 0 }}
+                    >
+                        Search
+                    </button>
+                </div>
                 {searchResults.length > 0 && (
-                    <div style={{ marginTop: "10px" }}>
+                    <div className="match-results-list">
                         {searchResults.map((r, i) => (
-                            <div key={i} style={{ padding: "10px", borderBottom: "1px solid #eee" }}>
-                                <strong>{r.title}</strong> — Score: {r.score}
-                                <p>{r.description}</p>
-                                <small>Salary: {r.salary}</small>
+                            <div key={i} className="match-result-item">
+                                <div className="match-result-header">
+                                    <strong>{r.title}</strong>
+                                    <span className="match-score">Relevance: {Math.round(r.score * 100)}%</span>
+                                </div>
+                                <p style={{ margin: "0.5rem 0", color: "var(--text)", fontSize: "0.95rem" }}>
+                                    {r.description}
+                                </p>
+                                <div style={{ fontSize: "0.85rem", color: "var(--accent)", fontWeight: 600 }}>
+                                    Salary: {r.salary}
+                                </div>
                             </div>
                         ))}
                     </div>
                 )}
             </div>
 
-            <div style={{ padding: "15px", border: "1px solid #ccc", borderRadius: "5px" }}>
-                <h3>Step 3: Match Your Profile</h3>
-                <input
-                    type="text"
-                    value={skills}
-                    onChange={(e) => setSkills(e.target.value)}
-                    placeholder="Your skills... e.g. 'Python, React, SQL'"
-                    style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
-                />
-                <input
-                    type="text"
-                    value={experience}
-                    onChange={(e) => setExperience(e.target.value)}
-                    placeholder="Your experience... e.g. '3 years in web development'"
-                    style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
-                />
-                <button onClick={handleMatch} disabled={loading || !skills.trim()} style={{ padding: "8px 20px" }}>
+            {/* Step 3 */}
+            <div className="match-section">
+                <h3 className="match-section-title">
+                    <span className="match-badge">Step 3</span> Match Your Profile
+                </h3>
+                <p style={{ fontSize: "0.95rem", color: "var(--text)", marginBottom: "1.25rem" }}>
+                    Provide your skills and professional experiences to let the AI score and rank the best-fitting jobs.
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.25rem" }}>
+                    <input
+                        type="text"
+                        value={skills}
+                        onChange={(e) => setSkills(e.target.value)}
+                        placeholder="Your skills... e.g. 'Python, React, PostgreSQL, Docker'"
+                        className="input"
+                    />
+                    <input
+                        type="text"
+                        value={experience}
+                        onChange={(e) => setExperience(e.target.value)}
+                        placeholder="Your experience... e.g. '3 years of building full-stack web applications'"
+                        className="input"
+                    />
+                </div>
+                <button 
+                    onClick={handleMatch} 
+                    disabled={loading || !skills.trim()} 
+                    className="add-btn"
+                    style={{ marginTop: 0 }}
+                >
                     {loading ? "Matching..." : "Find Matching Jobs"}
                 </button>
                 {matches.length > 0 && (
-                    <div style={{ marginTop: "10px" }}>
-                        <h4>Top Matches</h4>
-                        {matches.map((m, i) => (
-                            <div key={i} style={{ padding: "10px", borderBottom: "1px solid #eee" }}>
-                                <strong>{m.title}</strong> — Match: {m.match_score}%
-                                <p>{m.description}</p>
-                                <small>Salary: {m.salary}</small>
-                            </div>
-                        ))}
+                    <div className="match-results-list">
+                        <h4 style={{ margin: "1rem 0 0.5rem 0", color: "var(--text-h)", fontSize: "1.1rem", fontWeight: 600 }}>
+                            Top Recommended Openings
+                        </h4>
+                        {matches.map((m, i) => {
+                            const scoreClass = m.match_score > 75 ? "" : m.match_score > 40 ? "medium" : "low";
+                            return (
+                                <div key={i} className="match-result-item">
+                                    <div className="match-result-header">
+                                        <strong>{m.title}</strong>
+                                        <span className={`match-score ${scoreClass}`}>
+                                            {m.match_score}% Match
+                                        </span>
+                                    </div>
+                                    <p style={{ margin: "0.5rem 0", color: "var(--text)", fontSize: "0.95rem" }}>
+                                        {m.description}
+                                    </p>
+                                    <div style={{ fontSize: "0.85rem", color: "var(--accent)", fontWeight: 600 }}>
+                                        Salary: {m.salary}
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
             </div>

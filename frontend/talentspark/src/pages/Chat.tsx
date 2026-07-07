@@ -31,28 +31,45 @@ function Chat() {
     };
 
     return (
-        <div>
-            <h2>Career Chat</h2>
-            <div style={{ border: "1px solid #ccc", padding: "10px", height: "400px", overflowY: "scroll" }}>
-                {messages.length === 0 && <p>Ask me anything about your career!</p>}
+        <div className="chat-container">
+            <div className="chat-header">
+                <h3>⚡ Career Chatbot</h3>
+            </div>
+            <div className="chat-messages">
+                {messages.length === 0 && (
+                    <div style={{ textAlign: "center", padding: "2rem 1rem", color: "var(--text)" }}>
+                        <p style={{ fontSize: "1.05rem", fontWeight: 500, margin: "0 auto", maxWidth: "450px" }}>
+                            Welcome to your Career AI Assistant! Ask me anything about career paths, resume tips, interview prep, or job match recommendations.
+                        </p>
+                    </div>
+                )}
                 {messages.map((msg, i) => (
-                    <div key={i} style={{ marginBottom: "10px" }}>
-                        <strong>{msg.role === "user" ? "You" : "Bot"}:</strong>
-                        <p>{msg.content}</p>
+                    <div key={i} className={`chat-message ${msg.role === "user" ? "user" : "bot"}`}>
+                        <div className="chat-bubble">
+                            {msg.content}
+                        </div>
                     </div>
                 ))}
-                {loading && <p><em>Thinking...</em></p>}
+                {loading && (
+                    <div className="chat-message bot">
+                        <div className="chat-bubble" style={{ opacity: 0.75 }}>
+                            Thinking...
+                        </div>
+                    </div>
+                )}
             </div>
-            <form onSubmit={handleSend} style={{ marginTop: "10px" }}>
+            <form onSubmit={handleSend} className="chat-input-form">
                 <input
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type your message..."
-                    style={{ width: "80%" }}
+                    placeholder="Ask a question about careers..."
+                    className="input"
                     disabled={loading}
                 />
-                <button type="submit" disabled={loading}>Send</button>
+                <button type="submit" className="chat-send-btn" disabled={loading || !input.trim()}>
+                    {loading ? "..." : "Send"}
+                </button>
             </form>
         </div>
     );

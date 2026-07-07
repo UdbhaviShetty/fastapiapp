@@ -1,12 +1,12 @@
 import NavBar from "./components/NavBar";
 import CompanyCard from "./components/CompanyCard";
 import JobCard from "./components/JobCard";
-import Footer from "./components/Footer";
+import Footer from "./components/footer";
 import { useEffect, useState } from "react";
 import { getCompanies, updateCompany, deleteCompany, createCompany } from "./Services/CompanyServices";
 import { getJobs, updateJob, deleteJob, createJob } from "./Services/JobService";
 import type { Company } from "./types/company"
-import type { Job } from "./types/Job"
+import type { Job } from "./types/job"
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Chat from "./pages/Chat";
@@ -26,6 +26,12 @@ function App() {
   const handleLogin = (newToken: string) => {
     localStorage.setItem("token", newToken);
     setToken(newToken);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setCurrentPage("home");
   };
 
   async function fetchData() {
@@ -130,39 +136,41 @@ function App() {
   }
 
   if (loading) {
-    return <div>Loading...</div>
+    return <div className="loading-state">Loading...</div>
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>
+    return <div className="error-state">Error: {error.message}</div>
   }
+
   return (
-    <>
-      <NavBar currentPage={currentPage} onNavigate={setCurrentPage} />
-      <br />
-      {currentPage === "home" && (
-        <>
-          <CompanyCard
-            companies={companies}
-            jobs={jobs}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onAdd={handleAdd}
-          />
-          <JobCard
-            jobs={jobs}
-            companies={companies}
-            onEdit={handleJobEdit}
-            onDelete={handleJobDelete}
-            onAdd={handleJobAdd}
-          />
-        </>
-      )}
-      {currentPage === "chat" && <Chat />}
-      {currentPage === "resume" && <ResumeAnalyser />}
-      {currentPage === "jobmatch" && <JobMatch />}
+    <div className="app-container">
+      <NavBar currentPage={currentPage} onNavigate={setCurrentPage} onLogout={handleLogout} />
+      <main className="main-content">
+        {currentPage === "home" && (
+          <div className="dashboard-view">
+            <CompanyCard
+              companies={companies}
+              jobs={jobs}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onAdd={handleAdd}
+            />
+            <JobCard
+              jobs={jobs}
+              companies={companies}
+              onEdit={handleJobEdit}
+              onDelete={handleJobDelete}
+              onAdd={handleJobAdd}
+            />
+          </div>
+        )}
+        {currentPage === "chat" && <Chat />}
+        {currentPage === "resume" && <ResumeAnalyser />}
+        {currentPage === "jobmatch" && <JobMatch />}
+      </main>
       <Footer />
-    </>
+    </div>
   )
 }
 

@@ -21,28 +21,31 @@ function ResumeAnalyser() {
     };
 
     return (
-        <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
-            <h2>Resume Analyser</h2>
+        <div className="resume-container">
+            <h2 className="title">Resume Analyser</h2>
+            <p style={{ color: "var(--text)", marginBottom: "0.5rem" }}>
+                Paste the text content of your resume below to get instant feedback and structural analysis from our Career AI.
+            </p>
             <textarea
                 value={resumeText}
                 onChange={(e) => setResumeText(e.target.value)}
                 placeholder="Paste your resume text here..."
-                rows={10}
-                style={{ width: "100%", padding: "10px", fontSize: "14px", resize: "vertical" }}
+                className="input resume-textarea"
+                disabled={loading}
             />
-            <br />
             <button
                 onClick={handleAnalyse}
                 disabled={loading || !resumeText.trim()}
-                style={{ marginTop: "10px", padding: "8px 20px" }}
+                className="add-btn"
+                style={{ alignSelf: "flex-start", marginTop: "0.5rem" }}
             >
-                {loading ? "Analysing..." : "Analyse Resume"}
+                {loading ? "Analysing Resume..." : "Analyse Resume"}
             </button>
 
             {analysis && (
-                <div style={{ marginTop: "20px", textAlign: "left", whiteSpace: "pre-wrap", border: "1px solid #ccc", padding: "15px", borderRadius: "5px" }}>
-                    <h3>Analysis Result</h3>
-                    <p>{analysis}</p>
+                <div className="resume-result-card">
+                    <h3 className="resume-result-title">⚡ Analysis Result</h3>
+                    <p className="resume-result-text">{analysis}</p>
                 </div>
             )}
         </div>
