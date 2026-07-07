@@ -1,41 +1,16 @@
-from fastapi import APIRouter, HTTPException
-
+from fastapi import APIRouter
 from schemas.chat import ChatRequest, ChatResponse
+from services.langchain_service import ask_career_chatbot_response
 
-try:
-    from services.langchain_service import get_ai_response
-    _chat_import_error = None
-except ImportError as error:
-    get_ai_response = None
-    _chat_import_error = error
+router = APIRouter(prefix="/chat",tags=["Chat"])
 
-
-router = APIRouter(
-    prefix="/chat",
-    tags=["chat"]
-)
+# @router.post("/ask",response_model=ChatResponse)    
+# def chat_ask(request:ChatRequest):
+#     ans = llm_response(request.message)
+#     return ChatResponse(response=ans)
 
 
-@router.post("/", response_model=ChatResponse)
-def chat(request: ChatRequest):
-    if get_ai_response is None:
-        raise HTTPException(
-            status_code=503,
-            detail=f"Chat service unavailable: {_chat_import_error}"
-        )
-
-    try:
-        ai_response = get_ai_response(
-            user_query=request.message,
-            session_id=request.session_id
-        )
-
-        return ChatResponse(
-            response=ai_response
-        )
-
-    except Exception as error:
-        raise HTTPException(
-            status_code=500,
-            detail=str(error)
-        )
+@router.post("/ask_career",response_model=ChatResponse)
+def ask_career_chatbot(request:ChatRequest):
+    ans = ask_career_chatbot_response(request.message, request.session_id)
+    return ChatResponse(response=ans)   

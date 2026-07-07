@@ -1,5 +1,5 @@
 import api from "./api"
-import type { Job } from "../types/job"
+import type { Job } from "../types/Job"
 
 export async function getJobs(): Promise<Job[]> {
     const response = await api.get("/job/")

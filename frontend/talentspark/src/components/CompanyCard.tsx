@@ -1,116 +1,143 @@
-import type {Company} from "../types/company";
-import type {Job} from "../types/job";
-import {useState} from "react";
+import type { Company } from "../types/company";
+import type { Job } from "../types/Job";
+import { useState } from "react";
 
 type Props = {
-    companies:Company[];
-    jobs:Job[];
-    onEdit: (company:Company)=>void;
-    onDelete: (id:number)=>void;
-    onAdd: (company:Company)=>void;
+  companies: Company[];
+  jobs: Job[];
+  onEdit: (company: Company) => void;
+  onDelete: (id: number) => void;
+  onAdd: (company: Company) => void;
 }
-
 
 function CompanyCard({
-    companies,jobs,onAdd,onEdit,onDelete}:Props){
-    const [editCompanyId, setEditCompanyId] = useState<number | null>(null);
-    const [addform,setAddform] = useState<Company>({
-        id:0,
-        name:"",
-        email:"",
-        phone:"",
-        location:"",
-        jobs:[]
-    });
-    const [editform,setEditform] = useState<Company>({
-        id:0,
-        name:"",
-        email:"",
-        phone:"",
-        location:"",
-        jobs:[]
-    });
-    const handleAdd = () => {
-        onAdd(addform);
-        setAddform({
-            id:0,
-            name:"",
-            email:"",
-            phone:"",
-            location:"",
-            jobs:[]
-        })
-    }
-    const handleSave = () => {
-        onEdit(editform);
-        setEditCompanyId(null);
-        setEditform({
-            id:0,
-            name:"",
-            email:"",
-            phone:"",
-            location:"",
-            jobs:[]
-        })
-    } 
-    const handlecancel = () => {
-        setEditCompanyId(null);
-        setEditform({
-            id:0,
-            name:"",
-            email:"",
-            phone:"",
-            location:"",
-            jobs:[]
-        })
-    } 
+  companies, jobs, onAdd, onEdit, onDelete }: Props) {
+  const safeCompanies = Array.isArray(companies) ? companies : [];
+  const safeJobs = Array.isArray(jobs) ? jobs : [];
 
-    return(
-        <div>
-            {companies.map((company) => (
-                <div key={company.id}>
-                    {editCompanyId === company.id ? (
-                        <>
-                    <input type="text" value={editform.name} onChange={(e)=>setEditform({...editform,name:e.target.value})} placeholder="Name" />
-                    <input type="text" value={editform.email} onChange={(e)=>setEditform({...editform,email:e.target.value})} placeholder="Email" />
-                    <input type="text" value={editform.phone} onChange={(e)=>setEditform({...editform,phone:e.target.value})} placeholder="Phone" />
-                    <input type="text" value={editform.location} onChange={(e)=>setEditform({...editform,location:e.target.value})} placeholder="Location" />
-                    <button onClick={handleSave}>Save</button>
-                    <button onClick={handlecancel}>Cancel</button>
-                    </>
-                    ):
-                    <>
-                    <h1>{company.name}</h1>
-                    <p>Email: {company.email}</p>
-                    <p>Phone: {company.phone}</p>
-                    <p>Location: {company.location}</p>
-                    <p>Jobs: {jobs.filter(j => j.company_id === company.id).length} opening{jobs.filter(j => j.company_id === company.id).length === 1 ? '' : 's'}</p>
+  const [editCompanyId, setEditCompanyId] = useState<number | null>(null);
+  const [addform, setAddform] = useState<Company>({
+    id: 0,
+    name: "",
+    email: "",
+    phone: "",
+    location: "",
+    jobs: []
+  });
+  const [editform, setEditform] = useState<Company>({
+    id: 0,
+    name: "",
+    email: "",
+    phone: "",
+    location: "",
+    jobs: []
+  });
+
+  const handleAdd = () => {
+    onAdd(addform);
+    setAddform({
+      id: 0,
+      name: "",
+      email: "",
+      phone: "",
+      location: "",
+      jobs: []
+    })
+  }
+
+  const handleSave = () => {
+    onEdit(editform);
+    setEditCompanyId(null);
+    setEditform({
+      id: 0,
+      name: "",
+      email: "",
+      phone: "",
+      location: "",
+      jobs: []
+    })
+  }
+
+  const handlecancel = () => {
+    setEditCompanyId(null);
+    setEditform({
+      id: 0,
+      name: "",
+      email: "",
+      phone: "",
+      location: "",
+      jobs: []
+    })
+  }
+
+  return (
+    <div className="company-container">
+      <h2 className="title">Registered Companies</h2>
+
+      {/* Grid wrapper for structured card positioning */}
+      <div className="company-grid">
+        {safeCompanies.length === 0 ? (
+          <p style={{ gridColumn: "1 / -1", color: "var(--text-muted)" }}>No companies available right now.</p>
+        ) : safeCompanies.map((company) => {
+          const currentCompanyJobs = safeJobs.filter(j => j.company_id === company.id).length;
+          
+          return (
+            <div className="company-card" key={company.id}>
+              {editCompanyId === company.id ? (
+                <>
+                  <input className="input" type="text" value={editform.name} onChange={(e) => setEditform({ ...editform, name: e.target.value })} placeholder="Name" />
+                  <input className="input" type="text" value={editform.email} onChange={(e) => setEditform({ ...editform, email: e.target.value })} placeholder="Email" />
+                  <input className="input" type="text" value={editform.phone} onChange={(e) => setEditform({ ...editform, phone: e.target.value })} placeholder="Phone" />
+                  <input className="input" type="text" value={editform.location} onChange={(e) => setEditform({ ...editform, location: e.target.value })} placeholder="Location" />
+                  <div className="button-group">
+                    <button className="save-btn" onClick={handleSave}>Save</button>
+                    <button className="cancel-btn" onClick={handlecancel}>Cancel</button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h2 style={{ color: 'var(--text-h)', fontWeight: 600 }}>{company.name}</h2>
+                  <p style={{ margin: '8px 0 4px 0', fontSize: '15px' }}><strong>Email:</strong> {company.email}</p>
+                  <p style={{ margin: '4px 0', fontSize: '15px' }}><strong>Phone:</strong> {company.phone}</p>
+                  <p style={{ margin: '4px 0', fontSize: '15px' }}><strong>Location:</strong> {company.location}</p>
+                  <p style={{ margin: '4px 0 16px 0', fontSize: '15px', color: 'var(--accent)' }}>
+                    <strong>Active Openings:</strong> {currentCompanyJobs} opening{currentCompanyJobs === 1 ? '' : 's'}
+                  </p>
+                  <div className="button-group">
                     <button
-                        onClick={() => {
-                            setEditCompanyId(company.id);
-                            setEditform({
-                                id: company.id,
-                                name: company.name,
-                                email: company.email,
-                                phone: company.phone,
-                                location: company.location,
-                                jobs: company.jobs,
-                            });
-                        }}
+                      className="edit-btn"
+                      onClick={() => {
+                        setEditCompanyId(company.id);
+                        setEditform({
+                          id: company.id,
+                          name: company.name,
+                          email: company.email,
+                          phone: company.phone,
+                          location: company.location,
+                          jobs: company.jobs,
+                        });
+                      }}
                     >Edit</button>
-                    <button onClick={() => onDelete(company.id)}>Delete</button>
-                    </>}
-                    <hr></hr>
-                </div>
-            ))}
-            <h2>Add Company</h2>
-            <input type="text" value={addform.name} onChange={(e)=>setAddform({...addform,name:e.target.value})} placeholder="Name" />
-            <input type="text" value={addform.email} onChange={(e)=>setAddform({...addform,email:e.target.value})} placeholder="Email" />
-            <input type="text" value={addform.phone} onChange={(e)=>setAddform({...addform,phone:e.target.value})} placeholder="Phone" />
-            <input type="text" value={addform.location} onChange={(e)=>setAddform({...addform,location:e.target.value})} placeholder="Location" />
-            <button onClick={handleAdd}>Add</button>
-        </div>
-    )
+                    <button className="delete-btn" onClick={() => onDelete(company.id)}>Delete</button>
+                  </div>
+                </>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Creation workspace form */}
+      <div className="add-company">
+        <h2 style={{ color: 'var(--text-h)', marginBottom: '16px' }}>Add New Company</h2>
+        <input className="input" type="text" value={addform.name} onChange={(e) => setAddform({ ...addform, name: e.target.value })} placeholder="Name" />
+        <input className="input" type="text" value={addform.email} onChange={(e) => setAddform({ ...addform, email: e.target.value })} placeholder="Email" />
+        <input className="input" type="text" value={addform.phone} onChange={(e) => setAddform({ ...addform, phone: e.target.value })} placeholder="Phone" />
+        <input className="input" type="text" value={addform.location} onChange={(e) => setAddform({ ...addform, location: e.target.value })} placeholder="Location" />
+        <button className="add-btn" onClick={handleAdd}>Add Profile</button>
+      </div>
+    </div>
+  )
 }
 
-export default CompanyCard
+export default CompanyCard;
